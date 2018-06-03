@@ -1,38 +1,35 @@
+/*
+ *
+ * USELESS - DO NOT COMPILE
+ * JUST A REFERENCE FOR ALGORITMS USED IN THE MACRO
+ * CHECK clist.h
+ *
+ */
+
 #include "clist.h"
 
-/* FUNZIONI PRIMITIVE */
-
-list emptylist(){
-  list l = malloc(sizeof(item));
-  l->next = NULL;
-  return l;
+list list_new(){
+  return NULL;
 }
 
-bool empty(list l){
-  if(l == NULL) abort();
-  return l->next == NULL;
+bool list_isEmpty(list l){
+  return l == NULL;
 }
 
-type head(list l){
-  if(empty(l)) abort();
-  return l->value;
+list_element list_head(list l){
+  if(list_isEmpty(l)) abort();
+    return l->value;
 }
 
-list tail(list l){
-  if(empty(l)) abort();
+list list_tail(list l){
+  if(list_isEmpty(l)) abort();
   return l->next;
 }
 
-list cons(type d, list l){
-  list m = emptylist();
-  m->value = d;
-  m->next = l;
-  return m;
-}
 
-bool destroy(list l){
+bool list_destroy(list l){
   list prev;
-  while(!empty(l)){
+  while(!list_isEmpty(l)){
     prev = l;
     l = l->next;
     free(prev);
@@ -43,8 +40,8 @@ bool destroy(list l){
 /* FINE FUNZIONI PRIMITIVE */
 
 /* FUNZIONI NON PRIMITIVE */
-
-list insert(type d, unsigned p, list l){
+/*
+list list_insert(list_element d, unsigned p, list l){
   if(empty(l)) abort();
   if(p == 0)
     return cons(d, l);
@@ -60,12 +57,12 @@ list insert(type d, unsigned p, list l){
   }
 
   m->next = l;
-  m->value = d;
+  m->value = copyListElement(d);
   prev->next = m;
   return root;
 }
 
-list delete(unsigned p, list l){
+list list_delete(unsigned p, list l){
   if(empty(l)) abort();
   if(p == 0)
     return l->next;
@@ -83,22 +80,9 @@ list delete(unsigned p, list l){
   free(l);
   return root;
 }
-
-void showlist(list l){
-  if(empty(l)){
-    printf("[]");
-    return;
-  }
-  printf("[ %d", l->value);
-  l = tail(l);
-  while(!empty(l)){
-    printf(", %d", l->value);
-    l = l->next;
-  }
-  printf(" ]");
-}
-
-unsigned length(list l){
+*/
+/*
+unsigned list_length(list l){
   unsigned len = 0;
   while(!empty(l)){
     len++;
@@ -107,23 +91,23 @@ unsigned length(list l){
   return len;
 }
 
-unsigned find(type d, list l){
+unsigned list_find(list_element d, list l){
   for(int i = 0; !empty(l); i++, l = l->next)
     if(l->value == d)
       return i;
   return -1;
 }
 
-list sublist(unsigned start, unsigned end, list l){
+list list_sublist(unsigned start, unsigned end, list l){
   if(end < start) abort();
-  list m = malloc(sizeof(item));
+  list m = malloc(sizeof(list_node));
   list root = m;
   for(int i = 0; !empty(l) && i <= end; i++){
     if(i < start){
       l = l->next;
       continue;
     }
-    list n = malloc(sizeof(item));
+    list n = malloc(sizeof(list_node));
     m->value = l->value;
     m->next = n;
     l = l->next;
@@ -133,11 +117,11 @@ list sublist(unsigned start, unsigned end, list l){
   return root;
 }
 
-list copy(list l){
-  list m = malloc(sizeof(item));
+list list_copy(list l){
+  list m = malloc(sizeof(list_node));
   list root = m;
   while(!empty(l)){
-    list n = malloc(sizeof(item));
+    list n = malloc(sizeof(list_node));
     m->value = l->value;
     m->next = n;
     l = l->next;
@@ -146,4 +130,5 @@ list copy(list l){
   m->next = NULL;
   return root;
 }
+*/
 /* FINE FUNZIONI NON PRIMITIVE */
