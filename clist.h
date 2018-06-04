@@ -36,7 +36,7 @@ struct list_##NAME##_node {                                                   \
 typedef struct list_##NAME##_node list_##NAME##_node;                         \
 typedef struct list_##NAME##_node* list_##NAME;                               \
                                                                               \
-/* function definition (useless, but helpfull for readibility)*/              \
+/* function definition (useless, but helpful for readibility)*/              \
                                                                               \
 extern list_##NAME list_##NAME##_new();                                       \
 extern bool list_##NAME##_isEmpty(list_##NAME l);                             \
