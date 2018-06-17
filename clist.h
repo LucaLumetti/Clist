@@ -23,6 +23,12 @@ extern TYPE list_##NAME##_head(list_##NAME l);                                \
 extern list_##NAME list_##NAME##_tail(list_##NAME l);                         \
 extern list_##NAME list_##NAME##_cons(TYPE d, list_##NAME l);                 \
 extern void list_##NAME##_destroy(list_##NAME l);                             \
+extern void list_##NAME##_print(list_##NAME l);                               \
+extern size_t list_##NAME##_length(list_##NAME l);                            \
+extern list_##NAME list_##NAME##_delete(list_##NAME l);                       \
+extern list_##NAME list_##NAME##_push(TYPE e, list_##NAME l);                 \
+extern list_##NAME list_##NAME##_sort(list_##NAME l);                         \
+extern list_##NAME list_##NAME##_reverse(lit_##NAME l);                       \
                                                                               \
 /* ---------- Functions ----------*/                                          \
                                                                               \
@@ -67,20 +73,19 @@ extern void list_##NAME##_destroy(list_##NAME l);                             \
   }                                                                           \
                                                                               \
   /* -- list_print() -- */                                                    \
-  void list_##NAME##_print(list_##NAME l){                                    \
+  void list_##NAMEi##_print(list_##NAME l){                                   \
     if(list_##NAME##_isEmpty(l)){                                             \
-      printf("[]");                                                           \
+      printf("");                                                             \
       return;                                                                 \
     }                                                                         \
-    printf("[ ");                                                             \
     (PRINTFN)(l->value);                                                      \
     l = list_##NAME##_tail(l);                                                \
     while(!list_##NAME##_isEmpty(l)){                                         \
-      printf(", ");                                                           \
+      printf(" -> ");                                                         \
       (PRINTFN)(l->value);                                                    \
       l = l->next;                                                            \
     }                                                                         \
-    printf(" ]");                                                             \
+    printf("\n");                                                             \
   }                                                                           \
                                                                               \
   size_t list_##NAME##_length(list_##NAME l){                                 \
