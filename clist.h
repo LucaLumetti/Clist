@@ -24,7 +24,7 @@ extern list_element list_pop(list* l);
 /* FINE NON PRIMITIVE */
 
 /* MACRO */
-#define INIT_LIST(NAME, TYPE, COPYFN, PRINTFN)                                \
+#define INIT_LIST(NAME, TYPE, CMPFN, COPYFN, PRINTFN)                         \
                                                                               \
 /* -- Structs and Typedef -- */                                               \
                                                                               \
@@ -35,8 +35,6 @@ struct list_##NAME##_node {                                                   \
                                                                               \
 typedef struct list_##NAME##_node list_##NAME##_node;                         \
 typedef struct list_##NAME##_node* list_##NAME;                               \
-                                                                              \
-/* function definition (useless, but helpful for readibility)*/              \
                                                                               \
 extern list_##NAME list_##NAME##_new();                                       \
 extern bool list_##NAME##_isEmpty(list_##NAME l);                             \
@@ -68,6 +66,7 @@ extern void list_##NAME##_destroy(list_##NAME l);                             \
     if(list_##NAME##_isEmpty(l)) abort();                                     \
     return l->next;                                                           \
   }                                                                           \
+                                                                              \
   /* -- list list_cons(type d, list l) -- */                                  \
   list_##NAME list_##NAME##_cons(TYPE d, list_##NAME l){                      \
     list_##NAME m = malloc(sizeof(list_##NAME##_node));                       \
@@ -102,5 +101,28 @@ extern void list_##NAME##_destroy(list_##NAME l);                             \
       l = l->next;                                                            \
     }                                                                         \
     printf(" ]");                                                             \
+  }                                                                           \
+                                                                              \
+  size_t list_##NAME##_length(list_##NAME l){                                 \
+    size_t len = 0;                                                           \
+    for(len = 0; !list_##NAME##_isEmpty(l); len++){                           \
+      l = list_##NAME##_tail(l);                                              \
+    }                                                                         \
+    return len;                                                               \
+  }                                                                           \
+                                                                              \
+  list_##NAME list_##NAME##_delete(TYPE e, list_##NAME l){                    \
+    list_##NAME root = l;                                                     \
+    list_##NAME prec;                                                         \
+    while(!list_##NAME##_isEmpty(l)){                                         \
+      prec = l;                                                               \
+      l = list_##NAME##_tail(l);                                              \
+      if((CMPFN)(list_##NAME##_head(l), e) == 0){                             \
+        prec->next = list_##NAME##_tail(l);                                   \
+        free(l);                                                              \
+        return root;                                                          \
+      }                                                                       \
+    }                                                                         \
+    return root;                                                              \
   }
 #endif /* CLIST_H */
