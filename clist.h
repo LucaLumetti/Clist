@@ -80,10 +80,9 @@ extern void list_##NAME##_destroy(list_##NAME l);                             \
     list_##NAME prev;                                                         \
     while(!list_##NAME##_isEmpty(l)){                                         \
       prev = l;                                                               \
-      l = l->next;                                                            \
+      l = list_##NAME##_tail(l);                                              \
       free(prev);                                                             \
     }                                                                         \
-    free(l);                                                                  \
   }                                                                           \
                                                                               \
   /* -- list_print() -- */                                                    \
@@ -112,17 +111,81 @@ extern void list_##NAME##_destroy(list_##NAME l);                             \
   }                                                                           \
                                                                               \
   list_##NAME list_##NAME##_delete(TYPE e, list_##NAME l){                    \
+    if(list_##NAME##_isEmpty(l))                                              \
+      return l;                                                               \
     list_##NAME root = l;                                                     \
     list_##NAME prec;                                                         \
+                                                                              \
+    TYPE f = list_##NAME##_head(l);                                           \
+    if((CMPFN)(&f, &e) == 0){                                                 \
+      prec = l;                                                               \
+      l = list_##NAME##_tail(l);                                              \
+      free(prec);                                                             \
+      return l;                                                               \
+    }                                                                         \
+                                                                              \
     while(!list_##NAME##_isEmpty(l)){                                         \
       prec = l;                                                               \
       l = list_##NAME##_tail(l);                                              \
-      if((CMPFN)(list_##NAME##_head(l), e) == 0){                             \
+      if(list_##NAME##_isEmpty(l))                                            \
+        return root;                                                          \
+      f = list_##NAME##_head(l);                                              \
+      if((CMPFN)(&f, &e) == 0){                                               \
         prec->next = list_##NAME##_tail(l);                                   \
         free(l);                                                              \
         return root;                                                          \
       }                                                                       \
     }                                                                         \
     return root;                                                              \
+  }                                                                           \
+                                                                              \
+  list_##NAME list_##NAME##_push(TYPE e, list_##NAME l){                      \
+    if(list_##NAME##_isEmpty(l)){                                             \
+      return list_##NAME##_cons(e, l);                                        \
+    }                                                                         \
+    list_##NAME root = l;                                                     \
+    list_##NAME prec;                                                         \
+    while(!list_##NAME##_isEmpty(l)) {                                        \
+      prec = l;                                                               \
+      l = list_##NAME##_tail(l);                                              \
+    }                                                                         \
+    l = prec;                                                                 \
+    list_##NAME m = malloc(sizeof(list_##NAME##_node));                       \
+    m->value = (COPYFN)(e);                                                   \
+    m->next = NULL;                                                           \
+    l->next = m;                                                              \
+    return root;                                                              \
+  }                                                                           \
+                                                                              \
+  list_##NAME list_##NAME##_sort(list_##NAME l){                              \
+    size_t len = list_##NAME##_length(l);                                     \
+    list_##NAME root = l;                                                     \
+    TYPE *arr = malloc(len*sizeof(TYPE));                                     \
+    for(int i = 0; i < len; i++){                                             \
+      arr[i] = (COPYFN)(list_##NAME##_head(l));                               \
+      l = list_##NAME##_tail(l);                                              \
+    }                                                                         \
+                                                                              \
+    list_##NAME##_destroy(root);                                              \
+    qsort(arr, len, sizeof(TYPE), CMPFN);                                     \
+                                                                              \
+    list_##NAME m = list_##NAME##_new();                                      \
+    for(int i = 0; i < len; i++){                                             \
+      m = list_##NAME##_push(arr[i], m);                                      \
+    }                                                                         \
+    free(arr);                                                                \
+    return m;                                                                 \
+  }                                                                           \
+                                                                              \
+  list_##NAME list_##NAME##_reverse(list_##NAME l){                           \
+    list_##NAME root = l;                                                     \
+    list_##NAME m = list_##NAME##_new();                                      \
+    while(!list_##NAME##_isEmpty(l)) {                                        \
+      TYPE e = (COPYFN)(list_##NAME##_head(l));                               \
+      m = list_##NAME##_cons(e, m);                                           \
+      l = list_##NAME##_tail(l);                                              \
+    }                                                                         \
+    list_##NAME##_destroy(root);                                              \
+    return m;                                                                 \
   }
 #endif /* CLIST_H */
