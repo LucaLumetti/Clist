@@ -4,26 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
-/* NON PRIMITIVE */
-/*
-extern list list_insert(list_element d, unsigned p, list l);
-extern list list_delete(unsigned p, list l);
-extern void list_print(list l);
-extern unsigned list_length(list l);
-extern unsigned list_find(list_element d, list l);
-extern list list_sublist(unsigned start, unsigned end, list l);
-extern list list_copy(list l);
-*/
-/* TODO */
-/*
-extern list list_reverse(list l);
-extern list list_append(list l, list m);
-extern list_element list_push(list* l);
-extern list_element list_pop(list* l);
-*/
-/* FINE NON PRIMITIVE */
 
-/* MACRO */
 #define INIT_LIST(NAME, TYPE, CMPFN, COPYFN, PRINTFN)                         \
                                                                               \
 /* -- Structs and Typedef -- */                                               \
