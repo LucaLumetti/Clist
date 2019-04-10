@@ -25,10 +25,10 @@ extern list_##NAME list_##NAME##_cons(TYPE d, list_##NAME l);                 \
 extern void list_##NAME##_destroy(list_##NAME l);                             \
 extern void list_##NAME##_print(list_##NAME l);                               \
 extern size_t list_##NAME##_length(list_##NAME l);                            \
-extern list_##NAME list_##NAME##_delete(list_##NAME l);                       \
+extern list_##NAME list_##NAME##_delete(TYPE e, list_##NAME l);               \
 extern list_##NAME list_##NAME##_push(TYPE e, list_##NAME l);                 \
 extern list_##NAME list_##NAME##_sort(list_##NAME l);                         \
-extern list_##NAME list_##NAME##_reverse(lit_##NAME l);                       \
+extern list_##NAME list_##NAME##_reverse(list_##NAME l);                      \
                                                                               \
 /* ---------- Functions ----------*/                                          \
                                                                               \
@@ -73,9 +73,9 @@ extern list_##NAME list_##NAME##_reverse(lit_##NAME l);                       \
   }                                                                           \
                                                                               \
   /* -- list_print() -- */                                                    \
-  void list_##NAMEi##_print(list_##NAME l){                                   \
+  void list_##NAME##_print(list_##NAME l){                                    \
     if(list_##NAME##_isEmpty(l)){                                             \
-      printf("");                                                             \
+      printf("List is empty");                                                \
       return;                                                                 \
     }                                                                         \
     (PRINTFN)(l->value);                                                      \
@@ -147,7 +147,7 @@ extern list_##NAME list_##NAME##_reverse(lit_##NAME l);                       \
     size_t len = list_##NAME##_length(l);                                     \
     list_##NAME root = l;                                                     \
     TYPE *arr = malloc(len*sizeof(TYPE));                                     \
-    for(int i = 0; i < len; i++){                                             \
+    for(size_t i = 0; i < len; i++){                                          \
       arr[i] = (COPYFN)(list_##NAME##_head(l));                               \
       l = list_##NAME##_tail(l);                                              \
     }                                                                         \
@@ -156,7 +156,7 @@ extern list_##NAME list_##NAME##_reverse(lit_##NAME l);                       \
     qsort(arr, len, sizeof(TYPE), CMPFN);                                     \
                                                                               \
     list_##NAME m = list_##NAME##_new();                                      \
-    for(int i = 0; i < len; i++){                                             \
+    for(size_t i = 0; i < len; i++){                                          \
       m = list_##NAME##_push(arr[i], m);                                      \
     }                                                                         \
     free(arr);                                                                \
